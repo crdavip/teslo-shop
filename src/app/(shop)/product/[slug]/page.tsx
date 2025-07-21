@@ -1,6 +1,6 @@
-import { QuantitySelector, SizeSelector } from "@/components";
-import { initialData } from "@/seed/seed";
 import { notFound } from "next/navigation";
+import { QuantitySelector, SizeSelector, SlideShow, SlideShowMobile } from "@/components";
+import { initialData } from "@/seed/seed";
 
 interface Props {
   params: {
@@ -17,9 +17,10 @@ export default async function ProductPage({ params }: Props) {
   }
 
   return (
-    <div className="mt-5 mb-20 grid grid-cols-1 md:grid-cols-3 gap-3">
+    <div className="mt-0 sm:mt-5 mb-20 grid grid-cols-1 md:grid-cols-3 gap-3">
       <div className="col-span-1 md:col-span-2">
-        
+        <SlideShowMobile className="block md:hidden" title={product.title} images={product.images} />
+        <SlideShow className="hidden md:block" title={product.title} images={product.images} />
       </div>
       <div className="col-span-1 px-5">
         <h1 className="antialiased font-bold text-xl">{product.title}</h1>
@@ -27,7 +28,7 @@ export default async function ProductPage({ params }: Props) {
         <h3 className="font-bold text-sm">Tallas</h3>
         <SizeSelector selectedSize={product.sizes[0]} sizes={product.sizes} />
         <h3 className="font-bold text-sm">Cantidad</h3>
-        <QuantitySelector quantity={2}/>
+        <QuantitySelector quantity={2} />
         <button className="btn-primary my-5">Agregar al carrito</button>
         <h3 className="font-bold text-sm">Descripción</h3>
         <p className="font-light">{product.description}</p>
