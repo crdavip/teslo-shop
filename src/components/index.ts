@@ -4,6 +4,7 @@ export * from "./product/slide-show/SlideShow";
 export * from "./product/slide-show/SlideShowMobile";
 export * from "./products/product-grid/ProductGrid";
 export * from "./products/product-grid/ProductGridItem";
+export * from "./ui/footer/Footer";
 export * from "./ui/not-found/NotFound";
 export * from "./ui/sidebar/Sidebar";
 export * from "./ui/title/Title";
