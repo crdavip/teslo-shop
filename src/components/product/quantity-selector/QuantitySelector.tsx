@@ -19,14 +19,14 @@ export const QuantitySelector = ({ quantity }: Props) => {
       <button onClick={() => onQuantityChange(-1)}>
         <IoRemove
           size={20}
-          className={clsx({ "text-gray-300 cursor-auto": count == 1, "text-gray-600": count != 1 })}
+          className={clsx({ "text-gray-300 cursor-auto": count == 1, "text-gray-600 hover:text-blue-400": count != 1 })}
         />
       </button>
       <span className="w-15 mx-3 flex items-center justify-center bg-gray-200 border-gray-300 text-gray-600 border-2 rounded">
         {count}
       </span>
       <button onClick={() => onQuantityChange(1)}>
-        <IoAdd size={20} className={clsx({ "text-gray-300 cursor-auto": count == 5, "text-gray-600": count != 5 })} />
+        <IoAdd size={20} className={clsx({ "text-gray-300 cursor-auto": count == 5, "text-gray-600 hover:text-blue-400": count != 5 })} />
       </button>
     </div>
   );
