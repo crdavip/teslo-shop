@@ -1,5 +1,6 @@
 export const revalidate = 604800;
 
+import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getProductBySlug } from "@/actions";
 import { QuantitySelector, SizeSelector, SlideShow, SlideShowMobile, StockLabel } from "@/components";
@@ -7,6 +8,22 @@ import { QuantitySelector, SizeSelector, SlideShow, SlideShowMobile, StockLabel 
 interface Props {
   params: {
     slug: string;
+  };
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const slug = (await params).slug;
+
+  const product = await getProductBySlug(slug);
+
+  return {
+    title: product?.title ?? "Producto no encontrado",
+    description: product?.description ?? "",
+    openGraph: {
+      title: product?.title ?? "Producto no encontrado",
+      description: product?.description ?? "",
+      images: [`/products/${product?.images[0]}`]
+    },
   };
 }
 

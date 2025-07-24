@@ -3,7 +3,10 @@ import { tesloFont } from "@/config";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Teslo | Shop",
+  title: {
+    template: "%s - Teslo | Shop",
+    default: "Inicio - Teslo | Shop"
+  },
   description: "Una tienda virtual de productos",
 };
 
