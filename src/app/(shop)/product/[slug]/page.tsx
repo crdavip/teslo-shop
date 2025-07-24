@@ -1,6 +1,8 @@
+export const revalidate = 604800;
+
 import { notFound } from "next/navigation";
-import { QuantitySelector, SizeSelector, SlideShow, SlideShowMobile } from "@/components";
-import { initialData } from "@/seed/seed";
+import { getProductBySlug } from "@/actions";
+import { QuantitySelector, SizeSelector, SlideShow, SlideShowMobile, StockLabel } from "@/components";
 
 interface Props {
   params: {
@@ -10,7 +12,7 @@ interface Props {
 
 export default async function ProductPage({ params }: Props) {
   const { slug } = await params;
-  const product = initialData.products.find((product) => product.slug === slug);
+  const product = await getProductBySlug(slug);
 
   if (!product) {
     notFound();
@@ -23,12 +25,13 @@ export default async function ProductPage({ params }: Props) {
         <SlideShow className="hidden md:block" title={product.title} images={product.images} />
       </div>
       <div className="col-span-1 px-5">
+        <StockLabel slug={product.slug} />
         <h1 className="antialiased font-bold text-xl">{product.title}</h1>
         <p className="text-lg mb-5">${product.price}</p>
         <h3 className="font-bold text-sm">Tallas</h3>
-        <SizeSelector selectedSize={product.sizes[0]} sizes={product.sizes} />
+        <SizeSelector selectedSize={product.sizes[1]} sizes={product.sizes} />
         <h3 className="font-bold text-sm">Cantidad</h3>
-        <QuantitySelector quantity={2} />
+        <QuantitySelector quantity={1} />
         <button className="btn-primary my-5">Agregar al carrito</button>
         <h3 className="font-bold text-sm">Descripción</h3>
         <p className="font-light">{product.description}</p>
