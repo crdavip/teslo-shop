@@ -3,7 +3,8 @@ export const revalidate = 604800;
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getProductBySlug } from "@/actions";
-import { QuantitySelector, SizeSelector, SlideShow, SlideShowMobile, StockLabel } from "@/components";
+import { SlideShow, SlideShowMobile, StockLabel } from "@/components";
+import { AddToCart } from "./ui/AddToCart";
 
 interface Props {
   params: {
@@ -12,8 +13,7 @@ interface Props {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const slug = (await params).slug;
-
+  const { slug } = await params;
   const product = await getProductBySlug(slug);
 
   return {
@@ -22,7 +22,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       title: product?.title ?? "Producto no encontrado",
       description: product?.description ?? "",
-      images: [`/products/${product?.images[0]}`]
+      images: [`/products/${product?.images[0]}`],
     },
   };
 }
@@ -45,11 +45,7 @@ export default async function ProductPage({ params }: Props) {
         <StockLabel slug={product.slug} />
         <h1 className="antialiased font-bold text-xl">{product.title}</h1>
         <p className="text-lg mb-5">${product.price}</p>
-        <h3 className="font-bold text-sm">Tallas</h3>
-        <SizeSelector selectedSize={product.sizes[1]} sizes={product.sizes} />
-        <h3 className="font-bold text-sm">Cantidad</h3>
-        <QuantitySelector quantity={1} />
-        <button className="btn-primary my-5">Agregar al carrito</button>
+        <AddToCart product={product} />
         <h3 className="font-bold text-sm">Descripción</h3>
         <p className="font-light">{product.description}</p>
       </div>
