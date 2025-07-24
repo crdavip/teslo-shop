@@ -1,6 +1,8 @@
+export const revalidate = 60
+
 import { redirect } from "next/navigation";
-import { Pagination, ProductGrid, Title } from "@/components";
 import { getPaginatedProductsWithImages } from "@/actions";
+import { Pagination, ProductGrid, Title } from "@/components";
 import { ValidGender } from "@/interfaces";
 
 interface Props {
@@ -16,7 +18,10 @@ export default async function CategoryIDPage({ params, searchParams }: Props) {
   const { gender } = await params;
   const { page: pageTemp } = await searchParams;
   const page = pageTemp ? parseInt(pageTemp) : 1;
-  const { products, totalPages, totalProducts } = await getPaginatedProductsWithImages({ page, gender: gender as ValidGender });
+  const { products, totalPages, totalProducts } = await getPaginatedProductsWithImages({
+    page,
+    gender: gender as ValidGender,
+  });
 
   if (products.length === 0) {
     redirect(`/gender/${gender}`);
@@ -31,10 +36,7 @@ export default async function CategoryIDPage({ params, searchParams }: Props) {
 
   return (
     <>
-      <Title
-        title={`Productos para ${label[gender]}`}
-        subtitle={`Tenemos ${totalProducts} productos en este género`}
-      />
+      <Title title={`Productos para ${label[gender]}`} subtitle={`Tenemos ${totalProducts} productos en este género`} />
       <ProductGrid products={products} />
       <Pagination totalPages={totalPages} />
     </>
