@@ -13,6 +13,7 @@ import {
   IoTicketOutline,
 } from "react-icons/io5";
 import clsx from "clsx";
+import { logout } from "@/actions";
 
 export const Sidebar = () => {
   const isSideOpen = useUIStore((state) => state.isSideOpen);
@@ -42,7 +43,11 @@ export const Sidebar = () => {
             className="w-full bg-gray-50 rounded pl-10 py-1 pr-10 border-b-2 text-xl border-gray-300 focus:outline-none focus:border-blue-500"
           />
         </div>
-        <Link href="/" className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all">
+        <Link
+          href="/profile"
+          onClick={closeSide}
+          className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
+        >
           <IoPersonOutline size={30} />
           <span className="ml-3 text-xl">Perfil</span>
         </Link>
@@ -50,14 +55,21 @@ export const Sidebar = () => {
           <IoTicketOutline size={30} />
           <span className="ml-3 text-xl">Pedidos</span>
         </Link>
-        <Link href="/" className="flex items-center mt-5 p-2 hover:bg-gray-100 rounded transition-all">
+        <Link
+          href="/auth/login"
+          onClick={closeSide}
+          className="flex items-center mt-5 p-2 hover:bg-gray-100 rounded transition-all"
+        >
           <IoLogInOutline size={30} />
           <span className="ml-3 text-xl">Ingresar</span>
         </Link>
-        <Link href="/" className="flex items-center mt-5 p-2 hover:bg-gray-100 rounded transition-all">
+        <button
+          className="flex w-full items-center mt-5 p-2 hover:bg-gray-100 rounded transition-all"
+          onClick={() => logout()}
+        >
           <IoLogOutOutline size={30} />
           <span className="ml-3 text-xl">Salir</span>
-        </Link>
+        </button>
         <div className="w-full h-px bg-gray-300 my-5" />
         <Link href="/" className="flex items-center mt-5 p-2 hover:bg-gray-100 rounded transition-all">
           <IoShirtOutline size={30} />

@@ -1,11 +1,23 @@
 "use client";
 
+import { useActionState, useEffect } from "react";
+import { useFormStatus } from "react-dom";
 import Link from "next/link";
+import { IoWarningOutline } from "react-icons/io5";
+import clsx from "clsx";
 import { authenticate } from "@/actions";
-import { useActionState } from "react";
+import { useRouter } from "next/navigation";
 
 export const LoginForm = () => {
   const [state, dispatch] = useActionState(authenticate, undefined);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (state === "Success") {
+      router.replace("/");
+    }
+  }, [state]);
+
   return (
     <form action={dispatch} className="flex flex-col">
       <label htmlFor="email">Correo electrónico</label>
@@ -26,7 +38,16 @@ export const LoginForm = () => {
         autoComplete="off"
       />
 
-      <button type="submit" className="btn-primary cursor-pointer">Ingresar</button>
+      <LoginButton />
+
+      <div className="flex justify-center h-8 items-end space-x-1 fade-in" aria-live="polite" aria-atomic="true">
+        {state === "CredentialsSignin" && (
+          <>
+            <IoWarningOutline className="h-5 w-5 text-red-400" />
+            <p className="text-sm text-red-400">Credenciales Invalidas</p>
+          </>
+        )}
+      </div>
 
       <div className="flex items-center my-5">
         <div className="flex-1 border-t border-gray-500"></div>
@@ -38,5 +59,21 @@ export const LoginForm = () => {
         Crear una nueva cuenta
       </Link>
     </form>
+  );
+};
+
+const LoginButton = () => {
+  const { pending } = useFormStatus();
+  return (
+    <button
+      type="submit"
+      className={clsx({
+        "btn-primary": !pending,
+        "btn-disabled": pending,
+      })}
+      disabled={pending}
+    >
+      Ingresar
+    </button>
   );
 };
