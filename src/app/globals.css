@@ -53,5 +53,5 @@ button {
 }
 
 .btn-disabled {
-  @apply bg-gray-600 hover:bg-gray-600 text-white py-2 px-4 rounded transition-all;
+  @apply bg-gray-600 hover:bg-gray-600 text-white py-2 px-4 rounded transition-all cursor-auto;
 }
