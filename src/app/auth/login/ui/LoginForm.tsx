@@ -6,15 +6,13 @@ import Link from "next/link";
 import { IoWarningOutline } from "react-icons/io5";
 import clsx from "clsx";
 import { authenticate } from "@/actions";
-import { useRouter } from "next/navigation";
 
 export const LoginForm = () => {
   const [state, dispatch] = useActionState(authenticate, undefined);
-  const router = useRouter();
 
   useEffect(() => {
     if (state === "Success") {
-      router.replace("/");
+      window.location.replace("/");
     }
   }, [state]);
 
