@@ -1,11 +1,11 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { SubmitHandler, useForm } from "react-hook-form";
 import clsx from "clsx";
 import { IoWarningOutline } from "react-icons/io5";
-import { registerUser } from "@/actions";
-import { useState } from "react";
+import { loginUser, registerUser } from "@/actions";
 
 type FormInputs = {
   fullName: string;
@@ -32,7 +32,8 @@ export const RegisterForm = () => {
       return;
     }
 
-
+    await loginUser(email.toLowerCase(), password);
+    window.location.replace("/");
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">

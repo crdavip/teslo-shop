@@ -24,7 +24,7 @@ export const LoginForm = () => {
         name="email"
         id="email"
         type="email"
-        autoComplete="off"
+        autoComplete="email"
       />
 
       <label htmlFor="email">Contraseña</label>
@@ -33,7 +33,7 @@ export const LoginForm = () => {
         name="password"
         id="password"
         type="password"
-        autoComplete="off"
+        autoComplete="current-password"
       />
 
       <LoginButton />
