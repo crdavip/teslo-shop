@@ -1,9 +1,11 @@
 "use client";
 
-import clsx from "clsx";
 import Link from "next/link";
 import { SubmitHandler, useForm } from "react-hook-form";
+import clsx from "clsx";
 import { IoWarningOutline } from "react-icons/io5";
+import { registerUser } from "@/actions";
+import { useState } from "react";
 
 type FormInputs = {
   fullName: string;
@@ -12,6 +14,7 @@ type FormInputs = {
 };
 
 export const RegisterForm = () => {
+  const [errorMessage, setErrorMessage] = useState("");
   const {
     register,
     handleSubmit,
@@ -19,14 +22,23 @@ export const RegisterForm = () => {
   } = useForm<FormInputs>();
 
   const onSubmit: SubmitHandler<FormInputs> = async (data) => {
+    setErrorMessage("");
     const { fullName, email, password } = data;
-    console.log({ fullName, email, password });
+
+    const res = await registerUser(fullName, email, password);
+
+    if (!res.ok) {
+      setErrorMessage(res.message);
+      return;
+    }
+
+
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
       <label htmlFor="email">Nombre</label>
       {errors.fullName?.type === "required" && (
-        <p className="text-red-400 text-xs flex items-center gap-1 mb-1">
+        <p className="text-red-400 text-xs flex items-center gap-1 mb-1 fade-in">
           <IoWarningOutline /> El nombre es obligatorio
         </p>
       )}
@@ -45,7 +57,7 @@ export const RegisterForm = () => {
 
       <label htmlFor="email">Correo electrónico</label>
       {errors.email?.type === "required" && (
-        <p className="text-red-400 text-xs flex items-center gap-1 mb-1">
+        <p className="text-red-400 text-xs flex items-center gap-1 mb-1 fade-in">
           <IoWarningOutline /> El correo es obligatorio
         </p>
       )}
@@ -63,7 +75,7 @@ export const RegisterForm = () => {
 
       <label htmlFor="email">Contraseña</label>
       {errors.password?.type === "required" && (
-        <p className="text-red-400 text-xs flex items-center gap-1 mb-1">
+        <p className="text-red-400 text-xs flex items-center gap-1 mb-1 fade-in">
           <IoWarningOutline /> La contraseña es obligatoria
         </p>
       )}
@@ -80,6 +92,11 @@ export const RegisterForm = () => {
       />
 
       <button className="btn-primary cursor-pointer">Crear cuenta</button>
+      {errorMessage && (
+        <p className="text-red-400 text-md flex items-center justify-center gap-1 mt-4 fade-in">
+          <IoWarningOutline /> {errorMessage}
+        </p>
+      )}
 
       <div className="flex items-center my-5">
         <div className="flex-1 border-t border-gray-500"></div>
