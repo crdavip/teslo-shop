@@ -1,7 +1,9 @@
 "use client";
 
+import clsx from "clsx";
 import Link from "next/link";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { IoWarningOutline } from "react-icons/io5";
 
 type FormInputs = {
   fullName: string;
@@ -10,7 +12,11 @@ type FormInputs = {
 };
 
 export const RegisterForm = () => {
-  const { register, handleSubmit } = useForm<FormInputs>();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormInputs>();
 
   const onSubmit: SubmitHandler<FormInputs> = async (data) => {
     const { fullName, email, password } = data;
@@ -19,8 +25,18 @@ export const RegisterForm = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
       <label htmlFor="email">Nombre</label>
+      {errors.fullName?.type === "required" && (
+        <p className="text-red-400 text-xs flex items-center gap-1 mb-1">
+          <IoWarningOutline /> El nombre es obligatorio
+        </p>
+      )}
       <input
-        className="px-5 py-2 border bg-gray-200 rounded mb-5 border-gray-300 focus:outline-0 focus:border-blue-500"
+        className={clsx(
+          "px-5 py-2 border bg-gray-200 rounded mb-5 border-gray-300 focus:outline-0 focus:border-blue-400",
+          {
+            "border-red-400": !!errors.fullName,
+          }
+        )}
         type="text"
         autoFocus
         autoComplete="name"
@@ -28,16 +44,36 @@ export const RegisterForm = () => {
       />
 
       <label htmlFor="email">Correo electrónico</label>
+      {errors.email?.type === "required" && (
+        <p className="text-red-400 text-xs flex items-center gap-1 mb-1">
+          <IoWarningOutline /> El correo es obligatorio
+        </p>
+      )}
       <input
-        className="px-5 py-2 border bg-gray-200 rounded mb-5 border-gray-300 focus:outline-0 focus:border-blue-500"
+        className={clsx(
+          "px-5 py-2 border bg-gray-200 rounded mb-5 border-gray-300 focus:outline-0 focus:border-blue-400",
+          {
+            "border-red-400": !!errors.email,
+          }
+        )}
         type="email"
         autoComplete="email"
         {...register("email", { required: true, pattern: /^\S+@\S+$/i })}
       />
 
       <label htmlFor="email">Contraseña</label>
+      {errors.password?.type === "required" && (
+        <p className="text-red-400 text-xs flex items-center gap-1 mb-1">
+          <IoWarningOutline /> La contraseña es obligatoria
+        </p>
+      )}
       <input
-        className="px-5 py-2 border bg-gray-200 rounded mb-5 border-gray-300 focus:outline-0 focus:border-blue-500"
+        className={clsx(
+          "px-5 py-2 border bg-gray-200 rounded mb-5 border-gray-300 focus:outline-0 focus:border-blue-400",
+          {
+            "border-red-400": !!errors.password,
+          }
+        )}
         type="password"
         autoComplete="current-password"
         {...register("password", { required: true })}
