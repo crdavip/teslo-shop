@@ -51,9 +51,9 @@ export const AddressForm = ({ countries, userId, userStoredAddress = {} }: Props
   }, [address, reset]);
 
   const onSubmit: SubmitHandler<FormInputs> = async (data) => {
-    setAddress(data);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { remember, ...rest } = data;
+    setAddress(rest);
 
     if (data.remember) {
       await setUserAddress(rest, userId);

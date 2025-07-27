@@ -12,7 +12,8 @@ export const getUserAddress = async (userId: string) => {
 
     if (!address) return null;
 
-    const { countryId, address2, ...rest } = address;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { countryId, address2, id, userId: _, ...rest } = address;
 
     return {
       ...rest,
