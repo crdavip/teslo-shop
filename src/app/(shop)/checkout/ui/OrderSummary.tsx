@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import clsx from "clsx";
 import { useAddressStore, useCartStore } from "@/store";
 import { currencyFormat } from "@/utils";
+import { placeOrder } from "@/actions";
 
 export const OrderSummary = () => {
   const [orderSummaryLoaded, setOrderSummaryLoaded] = useState(false);
@@ -26,8 +27,9 @@ export const OrderSummary = () => {
         size: product.size,
     }))
 
-    console.log({address, productsToOrder})
     //Server action aquí
+    const res = await placeOrder(productsToOrder, address);
+    console.log({res})
 
     setIsPlacingOrder(false);
   };
