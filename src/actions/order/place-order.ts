@@ -47,7 +47,32 @@ export const placeOrder = async (productIds: ProductToOrder[], address: Address)
       { subTotal: 0, tax: 0, total: 0 }
     );
 
-    
+    const prismaTx = await prisma.$transaction(async (tx) => {
+      const order = await tx.order.create({
+        data: {
+          userId,
+          itemsInOrder: productsInOrder,
+          subTotal,
+          tax,
+          total,
+          OrderItem: {
+            createMany: {
+              data: productIds.map((p) => ({
+                quantity: p.quantity,
+                size: p.size,
+                productId: p.productId,
+                price: products.find((product) => product.id === p.productId)?.price ?? 0,
+              })),
+            },
+          },
+        },
+      });
+
+      return {
+        order
+      }
+    });
+
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
     throw new Error("ErrorCreatingOrder");
