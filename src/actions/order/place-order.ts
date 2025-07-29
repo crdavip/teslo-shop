@@ -48,6 +48,32 @@ export const placeOrder = async (productIds: ProductToOrder[], address: Address)
     );
 
     const prismaTx = await prisma.$transaction(async (tx) => {
+      const updatedProductPromises = products.map((product) => {
+        const productQuantity = productIds
+          .filter((p) => p.productId === product.id)
+          .reduce((acc, item) => item.quantity + acc, 0);
+
+        if (productQuantity === 0) {
+          throw new Error(`${product.title} no tiene cantidad`);
+        }
+
+        return tx.product.update({
+          where: {
+            id: product.id,
+          },
+          data: {
+            inStock: {
+              decrement: productQuantity,
+            },
+          },
+        });
+      });
+
+      const updatedProducts = await Promise.all(updatedProductPromises);
+      updatedProducts.forEach((product) => {
+        if (product.inStock < 0) throw new Error(`${product.title} no tiene stock`);
+      });
+
       const order = await tx.order.create({
         data: {
           userId,
@@ -68,21 +94,26 @@ export const placeOrder = async (productIds: ProductToOrder[], address: Address)
         },
       });
 
-      const {country, ...restAddress} = address;
+      const { country, ...restAddress } = address;
       const orderAddress = await tx.orderAddress.create({
         data: {
-            ...restAddress,
-            countryId: country,
-            orderId: order.id
-        }
-      })
+          ...restAddress,
+          countryId: country,
+          orderId: order.id,
+        },
+      });
 
       return {
         order,
-        updatedProducts: [],
-        orderAddress
-      }
+        updatedProducts,
+        orderAddress,
+      };
     });
+
+    return {
+      ok: true,
+      order: prismaTx.order.id,
+    };
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
