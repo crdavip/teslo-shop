@@ -20,33 +20,33 @@ export const placeOrder = async (productIds: ProductToOrder[], address: Address)
   }
   const userId = session.user.id;
 
+  const products = await prisma.product.findMany({
+    where: {
+      id: {
+        in: productIds.map((p) => p.productId),
+      },
+    },
+  });
+
+  const productsInOrder = productIds.reduce((count, product) => count + product.quantity, 0);
+
+  const { subTotal, tax, total } = productIds.reduce(
+    (totals, item) => {
+      const productQuantity = item.quantity;
+      const product = products.find((product) => product.id === item.productId);
+      if (!product) throw (`${item.productId} no existe - 500`);
+
+      const subTotal = product.price * productQuantity;
+      totals.subTotal += subTotal;
+      totals.tax += subTotal * 0.15;
+      totals.total += subTotal * 1.15;
+
+      return totals;
+    },
+    { subTotal: 0, tax: 0, total: 0 }
+  );
+
   try {
-    const products = await prisma.product.findMany({
-      where: {
-        id: {
-          in: productIds.map((p) => p.productId),
-        },
-      },
-    });
-
-    const productsInOrder = productIds.reduce((count, product) => count + product.quantity, 0);
-
-    const { subTotal, tax, total } = productIds.reduce(
-      (totals, item) => {
-        const productQuantity = item.quantity;
-        const product = products.find((product) => product.id === item.productId);
-        if (!product) throw new Error(`${item.productId} no existe - 500`);
-
-        const subTotal = product.price * productQuantity;
-        totals.subTotal += subTotal;
-        totals.tax += subTotal * 0.15;
-        totals.total += subTotal * 1.15;
-
-        return totals;
-      },
-      { subTotal: 0, tax: 0, total: 0 }
-    );
-
     const prismaTx = await prisma.$transaction(async (tx) => {
       const updatedProductPromises = products.map((product) => {
         const productQuantity = productIds
@@ -54,7 +54,7 @@ export const placeOrder = async (productIds: ProductToOrder[], address: Address)
           .reduce((acc, item) => item.quantity + acc, 0);
 
         if (productQuantity === 0) {
-          throw new Error(`${product.title} no tiene cantidad`);
+          throw (`${product.title} no tiene cantidad`);
         }
 
         return tx.product.update({
@@ -71,7 +71,7 @@ export const placeOrder = async (productIds: ProductToOrder[], address: Address)
 
       const updatedProducts = await Promise.all(updatedProductPromises);
       updatedProducts.forEach((product) => {
-        if (product.inStock < 0) throw new Error(`${product.title} no tiene stock`);
+        if (product.inStock < 0) throw (`${product.title} no tiene stock`);
       });
 
       const order = await tx.order.create({
@@ -113,10 +113,14 @@ export const placeOrder = async (productIds: ProductToOrder[], address: Address)
     return {
       ok: true,
       order: prismaTx.order.id,
+      message: "",
     };
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
-    throw new Error("ErrorCreatingOrder");
+    return {
+      ok: false,
+      message: "Error creando la orden",
+    };
   }
 };

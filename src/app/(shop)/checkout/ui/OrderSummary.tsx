@@ -1,15 +1,20 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import clsx from "clsx";
 import { useAddressStore, useCartStore } from "@/store";
 import { currencyFormat } from "@/utils";
 import { placeOrder } from "@/actions";
+import { IoWarningOutline } from "react-icons/io5";
 
 export const OrderSummary = () => {
   const [orderSummaryLoaded, setOrderSummaryLoaded] = useState(false);
   const [isPlacingOrder, setIsPlacingOrder] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const cart = useCartStore((state) => state.cart);
+  const clearCart = useCartStore((state) => state.clearCart);
+  const router = useRouter();
 
   const getOrderSummary = useCartStore((state) => state.getOrderSummary);
   const orderSummary = getOrderSummary();
@@ -21,17 +26,21 @@ export const OrderSummary = () => {
 
   const onPlaceOrder = async () => {
     setIsPlacingOrder(true);
-    const productsToOrder = cart.map(product => ({
-        productId: product.id,
-        quantity: product.quantity,
-        size: product.size,
-    }))
+    const productsToOrder = cart.map((product) => ({
+      productId: product.id,
+      quantity: product.quantity,
+      size: product.size,
+    }));
 
-    //Server action aquí
     const res = await placeOrder(productsToOrder, address);
-    console.log({res})
+    if (!res.ok) {
+      setIsPlacingOrder(false);
+      setErrorMessage(res.message);
+      return;
+    }
 
-    setIsPlacingOrder(false);
+    clearCart();
+    router.replace(`/orders/${res.order}`);
   };
 
   if (!orderSummaryLoaded) {
@@ -102,9 +111,11 @@ export const OrderSummary = () => {
         >
           Realizar pedido
         </button>
-        {/* <p className="text-red-400 text-md flex justify-center items-center gap-1 mt-2 fade-in">
-          <IoWarningOutline /> Error al crear el pedido
-        </p> */}
+        {errorMessage && (
+          <p className="text-red-400 text-md flex justify-center items-center gap-1 mt-2 fade-in">
+            <IoWarningOutline /> {errorMessage}
+          </p>
+        )}
       </div>
     </div>
   );
