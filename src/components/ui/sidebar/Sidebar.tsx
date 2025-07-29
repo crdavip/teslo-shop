@@ -29,14 +29,14 @@ export const Sidebar = () => {
 
   return (
     <div>
-      {isSideOpen && <div className="fixed top-0 left-0 w-screen h-screen z-10 bg-black opacity-30" />}
+      {isSideOpen && <div className="fixed top-0 left-0 w-screen h-screen z-101 bg-black opacity-30" />}
       {isSideOpen && (
-        <div onClick={closeSide} className="fade-in fixed top-0 left-0 w-screen h-screen z-10 backdrop-blur-sm" />
+        <div onClick={closeSide} className="fade-in fixed top-0 left-0 w-screen h-screen z-101 backdrop-blur-sm" />
       )}
 
       <nav
         className={clsx(
-          "fixed p-5 right-0 top-0 w-[250px] sm:w-[400px] h-screen bg-white z-20 shadow-2xl transform transition-all duration-300",
+          "fixed p-5 right-0 top-0 w-[250px] sm:w-[400px] h-screen bg-white z-102 shadow-2xl transform transition-all duration-300",
           {
             "translate-x-full": !isSideOpen,
           }
