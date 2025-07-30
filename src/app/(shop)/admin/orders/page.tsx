@@ -2,12 +2,20 @@ export const revalidate = 0;
 
 import Link from "next/link";
 import { IoCardOutline } from "react-icons/io5";
-import { Title } from "@/components";
+import { Pagination, Title } from "@/components";
 import { getPaginatedOrders } from "@/actions";
 import { redirect } from "next/navigation";
 
-export default async function OrdersAdminPage() {
-  const { ok, orders = [] } = await getPaginatedOrders();
+interface Props {
+  searchParams: {
+    page?: string;
+  };
+}
+
+export default async function OrdersAdminPage({ searchParams }: Props) {
+  const { page: pageTemp } = await searchParams;
+  const page = pageTemp ? parseInt(pageTemp) : 1;
+  const { ok, orders = [], totalPages } = await getPaginatedOrders({ page });
 
   if (!ok) {
     redirect("/auth/login");
@@ -69,6 +77,7 @@ export default async function OrdersAdminPage() {
             ))}
           </tbody>
         </table>
+        <Pagination totalPages={totalPages} />
       </div>
     </>
   );
