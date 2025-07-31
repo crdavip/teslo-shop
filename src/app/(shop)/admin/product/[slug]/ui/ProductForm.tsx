@@ -6,7 +6,8 @@ import { useForm } from "react-hook-form";
 import { Categories, Product, ProductImage, ValidGender } from "@/interfaces";
 import { IoTrashOutline } from "react-icons/io5";
 import clsx from "clsx";
-import { createUpdateProduct } from "@/actions";
+import { createUpdateProduct, delelProductImage } from "@/actions";
+import { ProductImage as ProductImageComponent } from "@/components";
 
 interface Props {
   product: Partial<Product> & { ProductImage?: ProductImage[] };
@@ -219,17 +220,16 @@ export const ProductForm = ({ product, categories }: Props) => {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-5">
             {product.ProductImage?.map((image) => (
               <div className="relative" key={image.id}>
-                <Image
+                <ProductImageComponent
                   alt={product.title ?? ""}
-                  src={`/products/${image.url}`}
+                  src={image.url}
                   width={300}
                   height={300}
                   className="rounded shadow-md"
-                  priority
                 />
                 <button
                   type="button"
-                  onClick={() => console.log(image.id, image.url)}
+                  onClick={() => delelProductImage(image.id, image.url)}
                   className="btn-danger absolute right-2 top-2"
                 >
                   <IoTrashOutline size={20} />
