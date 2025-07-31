@@ -15,7 +15,7 @@ export interface Product {
 export interface ProductImage {
   id: number;
   url: string;
-  productId?: string;
+  productId: string;
 }
 
 export type ValidGender = "men" | "women" | "kid" | "unisex";
