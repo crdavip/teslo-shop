@@ -1,7 +1,7 @@
 "use client";
 
+import { ProductImage } from "@/components/product/product-image/ProductImage";
 import { Product } from "@/interfaces";
-import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -14,13 +14,12 @@ export const ProductGridItem = ({ product }: Props) => {
   return (
     <div className="rounded-md overflow-hidden fade-in">
       <Link href={`/product/${product.slug}`}>
-        <Image
-          src={`/products/${imageHover}`}
+        <ProductImage
+          src={imageHover}
           alt={product.title}
           className="w-full object-cover rounded"
           width={500}
           height={500}
-          priority
           onMouseEnter={() => setImageHover(product.images[1])}
           onMouseLeave={() => setImageHover(product.images[0])}
         />
