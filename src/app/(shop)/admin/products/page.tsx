@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Pagination, ProductImage, Title } from "@/components";
 import { getPaginatedProductsWithImages } from "@/actions";
 import { currencyFormat } from "@/utils";
+import { OptionsButtons } from "./ui/OptionsButtons";
 
 interface Props {
   searchParams: {
@@ -48,6 +49,9 @@ export default async function ProductsAdminPage({ searchParams }: Props) {
               <th scope="col" className="text-sm font-medium text-gray-600 px-6 py-4 text-left">
                 Tallas
               </th>
+              <th scope="col" className="text-sm font-medium text-gray-600 px-6 py-4 text-left">
+                Opciones
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -68,7 +72,10 @@ export default async function ProductsAdminPage({ searchParams }: Props) {
                   </Link>
                 </td>
                 <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                  <Link className="hover:text-blue-400 cursor-pointer font-bold" href={`/admin/product/${product.slug}`}>
+                  <Link
+                    className="hover:text-blue-400 cursor-pointer font-bold"
+                    href={`/admin/product/${product.slug}`}
+                  >
                     {product.title}
                   </Link>
                 </td>
@@ -78,6 +85,9 @@ export default async function ProductsAdminPage({ searchParams }: Props) {
                 <td className="text-sm text-gray-900 font-light px-6 ">{product.gender}</td>
                 <td className="text-sm font-semibold text-gray-900 px-6 ">{product.inStock}</td>
                 <td className="text-sm text-gray-900 font-light px-6 ">{product.sizes.join(" - ")}</td>
+                <td className="text-sm text-gray-900 font-light px-6 ">
+                  <OptionsButtons slugProduct={product.slug} productId={product.id} />
+                </td>
               </tr>
             ))}
           </tbody>

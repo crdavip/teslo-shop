@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { Categories, Product, ProductImage, ValidGender } from "@/interfaces";
 import { IoTrashOutline } from "react-icons/io5";
 import clsx from "clsx";
-import { createUpdateProduct, delelProductImage } from "@/actions";
+import { createUpdateProduct, deleteProductImage } from "@/actions";
 import { ProductImage as ProductImageComponent } from "@/components";
 
 interface Props {
@@ -169,10 +169,6 @@ export const ProductForm = ({ product, categories }: Props) => {
             ))}
           </select>
         </div>
-
-        <button type="submit" className="btn-primary mt-2">
-          Guardar cambios
-        </button>
       </div>
 
       {/* Selector de tallas y fotos */}
@@ -229,7 +225,7 @@ export const ProductForm = ({ product, categories }: Props) => {
                 />
                 <button
                   type="button"
-                  onClick={() => delelProductImage(image.id, image.url)}
+                  onClick={() => deleteProductImage(image.id, image.url)}
                   className="btn-danger absolute right-2 top-2"
                 >
                   <IoTrashOutline size={20} />
@@ -238,6 +234,9 @@ export const ProductForm = ({ product, categories }: Props) => {
             ))}
           </div>
         </div>
+        <button type="submit" className="btn-primary mt-6">
+          Guardar cambios
+        </button>
       </div>
     </form>
   );

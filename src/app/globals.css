@@ -59,3 +59,15 @@ button {
 .btn-danger {
   @apply bg-red-600 hover:bg-red-800 text-white py-2 px-2 rounded transition-all;
 }
+
+.btn-danger-alt {
+  @apply bg-transparent hover:bg-red-600 text-red-600 border border-red-600 py-2 px-2 hover:text-white rounded transition-all;
+}
+
+.btn-info {
+  @apply bg-blue-600 hover:bg-blue-800 text-white py-2 px-2 rounded transition-all;
+}
+
+.btn-info-alt {
+  @apply bg-transparent hover:bg-blue-600 text-blue-600 border border-blue-600 py-2 px-2 hover:text-white rounded transition-all;
+}

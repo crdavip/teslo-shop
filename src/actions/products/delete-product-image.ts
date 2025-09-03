@@ -5,7 +5,7 @@ import { v2 as cloudinary } from "cloudinary";
 import { prisma } from "@/lib/prisma";
 cloudinary.config(process.env.CLOUDINARY_URL ?? "");
 
-export const delelProductImage = async (imageId: number, imageUrl: string) => {
+export const deleteProductImage = async (imageId: number, imageUrl: string) => {
   if (!imageUrl.startsWith("http")) {
     return {
       ok: false,

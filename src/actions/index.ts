@@ -14,6 +14,7 @@ export * from "./payments/paypal-payment";
 export * from "./payments/set-transaction-id";
 export * from "./products/create-update-product";
 export * from "./products/delete-product-image";
+export * from "./products/delete-product";
 export * from "./products/get-product-slug";
 export * from "./products/get-stock-slug";
 export * from "./products/product-pagination";
