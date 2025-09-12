@@ -6,9 +6,31 @@ declare module "next-auth" {
       id: string;
       name: string;
       email: string;
-      emailVerified?: boolean;
+      emailVerified?: Date | null;
       role: string;
-      image?: string;
+      image?: string | null;
     } & DefaultSession["user"];
+  }
+
+  interface User extends DefaultUser {
+    id: string;
+    name: string;
+    email: string;
+    emailVerified?: Date | null;
+    role: string;
+    image?: string | null;
+  }
+}
+
+declare module "next-auth/jwt" {
+  interface JWT {
+    data?: {
+      id: string;
+      name: string;
+      email: string;
+      emailVerified?: Date | null;
+      role: string;
+      image?: string | null;
+    };
   }
 }

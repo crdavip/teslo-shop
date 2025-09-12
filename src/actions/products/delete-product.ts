@@ -6,7 +6,7 @@ import { deleteProductImage } from "./delete-product-image";
 
 export const deleteProduct = async (idProduct: string) => {
   try {
-    const prismaTx = await prisma.$transaction(async (tx) => {
+    await prisma.$transaction(async (tx) => {
       const product = await tx.product.findFirst({
         where: {
           id: idProduct,
@@ -39,7 +39,6 @@ export const deleteProduct = async (idProduct: string) => {
 
       console.log("Producto eleminado");
     });
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
     console.log(error);
     throw new Error("ErrorDeletingImages");
