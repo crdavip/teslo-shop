@@ -32,7 +32,7 @@ export const SlideShowMobile = ({ images, title, className }: Props) => {
         {images.map((image) => (
           <SwiperSlide key={image}>
             <ProductImage
-              src={`/products/${image}`}
+              src={image}
               alt={title}
               width={600}
               height={500}
