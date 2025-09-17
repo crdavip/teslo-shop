@@ -1,10 +1,10 @@
 # 🚀 Teslo | Shop
 
-Una aplicación web moderna construida con [Next.js](https://nextjs.org/), diseñada para ofrecer una experiencia rápida, escalable y amigable para el usuario. Este proyecto utiliza las mejores prácticas de desarrollo con Next y herramientas modernas para el frontend.
+Una aplicación ecommerce moderna construida con [Next.js](https://nextjs.org/), diseñada para ofrecer una experiencia rápida, escalable y amigable para el usuario. Este proyecto utiliza las mejores prácticas de desarrollo con Next y herramientas modernas para el frontend y backend. Tiene pagos con paypal pero se puede cambiar a otro sin problemas.
 
 ## 🖥️ Demo
 
-🔗 [Ver Demo en vivo](https://tu-sitio-web.com)  
+🔗 [Ver Demo en vivo](https://teslo-crdavip.vercel.app/)  
 
 ---
 
@@ -15,8 +15,8 @@ Una aplicación web moderna construida con [Next.js](https://nextjs.org/), dise�
 - **TypeScript** – Tipado estático para mayor robustez
 - **Tailwind CSS** – Estilado rápido con clases utilitarias
 - **PostgreSQL** - Base de datos relacional
-- **Docker** - 
-- **Prisma** - 
+- **Docker** - Empaquetar, distribuir y ejecutar aplicaciones en contenedores
+- **Prisma** - Herramienta de mapeo objeto-relacional para Node.js
 
 ---
 
@@ -25,8 +25,8 @@ Una aplicación web moderna construida con [Next.js](https://nextjs.org/), dise�
 ### 1. Clonar el repositorio
 
 ```bash
-git clone https://github.com/tu-usuario/mi-proyecto-next.git
-cd mi-proyecto-next
+git clone https://github.com/crdavip/teslo-shop.git
+cd teslo-shop
 ```
 
 ### 2. Instalar las dependencias
@@ -47,6 +47,12 @@ DB_USER=
 DB_NAME=
 DB_PASSWORD=
 DATABASE_URL=
+AUTH_SECRET=
+NEXT_PUBLIC_PAYPAL_CLIENT_ID=
+PAYPAL_SECRET=
+PAYPAL_OAUTH_URL=
+PAYPAL_ORDERS_URL=
+CLOUDINARY_URL=
 ```
 
 ### 4. Levantar la BD de PostgreSQL
@@ -94,4 +100,4 @@ npm run seed      # Ejecutar semilla de datos
 
 ## 👨‍💻 Autor
 Desarrollado con ❤️ por **Cristian David**
-🔗 [GitHub](https://tu-sitio-web.com) · [LinkedIn](https://tu-sitio-web.com)
+🔗 [GitHub](https://github.com/crdavip) · [LinkedIn](https://www.linkedin.com/in/crdavip/)
