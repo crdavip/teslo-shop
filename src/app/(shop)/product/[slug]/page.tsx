@@ -7,9 +7,7 @@ import { SlideShow, SlideShowMobile, StockLabel } from "@/components";
 import { AddToCart } from "./ui/AddToCart";
 
 interface Props {
-  params: {
-    slug: string;
-  };
+    params: Promise<{ slug: string }>;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

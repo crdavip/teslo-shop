@@ -6,9 +6,7 @@ import { getOrderById } from "@/actions";
 import { currencyFormat } from "@/utils";
 
 interface Props {
-  params: {
-    id: string;
-  };
+  params: Promise<{ id: string }>;
 }
 
 export default async function OrderPage({ params }: Props) {

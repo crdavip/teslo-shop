@@ -7,14 +7,15 @@ import { currencyFormat } from "@/utils";
 import { OptionsButtons } from "./ui/OptionsButtons";
 
 interface Props {
-  searchParams: {
-    page?: string;
-  };
+  searchParams: Promise<{ page?: string | string[] | undefined }>;
 }
 
 export default async function ProductsAdminPage({ searchParams }: Props) {
-  const { page: pageTemp } = await searchParams;
-  const page = pageTemp ? parseInt(pageTemp) : 1;
+  const sp = await searchParams;
+  const rawPage = Array.isArray(sp.page) ? sp.page[0] : sp.page;
+  const page = rawPage ? parseInt(rawPage, 10) : 1;
+
+
   const { products, totalPages } = await getPaginatedProductsWithImages({ page });
 
   return (
@@ -86,7 +87,7 @@ export default async function ProductsAdminPage({ searchParams }: Props) {
                 <td className="text-sm font-semibold text-gray-900 px-6 ">{product.inStock}</td>
                 <td className="text-sm text-gray-900 font-light px-6 ">{product.sizes.join(" - ")}</td>
                 <td className="text-sm text-gray-900 font-light px-6 ">
-                  <OptionsButtons slugProduct={product.slug} productId={product.id} />
+                  <OptionsButtons slugProduct={product.slug} idProduct={product.id} />
                 </td>
               </tr>
             ))}

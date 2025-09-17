@@ -6,14 +6,13 @@ import { redirect } from "next/navigation";
 import { UsersTable } from "./ui/UsersTable";
 
 interface Props {
-  searchParams: {
-    page?: string;
-  };
+  searchParams: Promise<{ page?: string | string[] | undefined }>;
 }
 
 export default async function UsersAdminPage({ searchParams }: Props) {
-  const { page: pageTemp } = await searchParams;
-  const page = pageTemp ? parseInt(pageTemp) : 1;
+  const sp = await searchParams;
+  const rawPage = Array.isArray(sp.page) ? sp.page[0] : sp.page;
+  const page = rawPage ? parseInt(rawPage, 10) : 1;
 
   const { ok, users = [], totalPages } = await getPaginatedUsers({ page });
 

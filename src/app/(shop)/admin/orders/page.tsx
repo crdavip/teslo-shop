@@ -7,14 +7,13 @@ import { getPaginatedOrders } from "@/actions";
 import { redirect } from "next/navigation";
 
 interface Props {
-  searchParams: {
-    page?: string;
-  };
+  searchParams: Promise<{ page?: string | string[] | undefined }>;
 }
 
 export default async function OrdersAdminPage({ searchParams }: Props) {
-  const { page: pageTemp } = await searchParams;
-  const page = pageTemp ? parseInt(pageTemp) : 1;
+  const sp = await searchParams;
+  const rawPage = Array.isArray(sp.page) ? sp.page[0] : sp.page;
+  const page = rawPage ? parseInt(rawPage, 10) : 1;
   const { ok, orders = [], totalPages } = await getPaginatedOrders({ page });
 
   if (!ok) {
